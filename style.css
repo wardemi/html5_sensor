@@ -1,0 +1,39 @@
+body{
+	font-family: 'Cantarell', sans-serif;
+}
+
+.wrapper-body .container{
+	padding-top: 75px;
+	min-height: 800px;
+	color: #333333;
+}
+
+.about h1{
+	text-transform: uppercase;
+	font-weight: 700;
+	text-align: center;
+	margin-top: 25px;
+	font-size: 4.75rem;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Cantarell:400,400italic,700,700italic);
+
+nav{
+	background: #333333;
+}
+
+.navbar{
+	border-bottom: 2px solid #F58400;
+}
+
+nav a{
+	color: #fff;
+}
+
+nav a:hover{
+	color: #F58400;
+}
+
+.nav>li>a:focus, .nav>li>a:hover{
+	background: none;
+}

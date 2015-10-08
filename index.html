@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML5 sensores view</title>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+
+
+  <link href='https://fonts.googleapis.com/css?family=Cantarell:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Hőm.Chart</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav " style="padding-left: 50px;">
+        <li class="active"><a href="#">Kezdőoldal</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="wrapper-body">
+  <div class="container about">
+      <div class="col-xs-12">
+        <h1>Hőm.Chart</h1>
+      </div>
+    
+  </div>
+</div>
+    
+
+
+  <script>
+    $.getJSON('data/mp_result_ms_hourly.json', function (json) {
+    var array = [];
+      for (var key in json) {
+          if (json.hasOwnProperty(key)) {
+              var item = json[key];
+              array.push({
+                  time: timeConverter(item.time),
+                  name: item.name,
+                  min: item.min,
+                  max: item.max,
+                  avg: item.avg
+              });            
+          }
+      }
+
+
+    console.log(array.length);
+    console.log(array[0].time);
+
+    }); 
+
+  function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var year = a.getFullYear();
+    var month = a.getMonth()+1;
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var time = year + '-' + month + '-' + date + ' ' + hour + ':' + min ;
+    return time;
+  }
+
+
+
+  </script>
+</body>
+</html>
