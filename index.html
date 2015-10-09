@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,12 +9,13 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
 
-
   <link href='https://fonts.googleapis.com/css?family=Cantarell:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 </head>
 <body>
 
@@ -36,53 +37,97 @@
     </div>
   </div>
 </nav>
-  
+
 <div class="wrapper-body">
   <div class="container about">
       <div class="col-xs-12">
         <h1>Hőm.Chart</h1>
       </div>
-    
+  </div>
+  <div class="container chart">
+    <div class="row">
+        <div class="col-xs-12 chart-wrapper">
+          <div id="chart_div" class=""> <img src="img/loading.gif" alt="loadinggif" /> </div>
+        </div>
+    </div>
   </div>
 </div>
+
+
+<script>
+  $(document).ready(function(){
     
+    function convertTimestamp(timestamp) {
+      var d = new Date(timestamp * 1000)/*,
+        yyyy = d.getFullYear(),
+        mm = ('0' + (d.getMonth() + 1)).slice(-2),  // Months are zero based. Add leading 0.
+        dd = ('0' + d.getDate()).slice(-2),     // Add leading 0.
+        hh = d.getHours(),
+        min = ('0' + d.getMinutes()).slice(-2),   // Add leading 0.
+        time;
+          
+        time = 'new Date('+yyyy + ',' + mm + ',' + dd + ',' + hh + ',' + min+')';*/
+        
+      return d;
+    }
 
+    /*Google API rész*/
 
-  <script>
-    $.getJSON('data/mp_result_ms_hourly.json', function (json) {
-    var array = [];
-      for (var key in json) {
-          if (json.hasOwnProperty(key)) {
-              var item = json[key];
-              array.push({
-                  time: timeConverter(item.time),
-                  name: item.name,
-                  min: item.min,
-                  max: item.max,
-                  avg: item.avg
-              });            
-          }
+    function drawBasic() {
+      
+      $.ajax({
+          url: "data/mp_result_ms_hourly.json",
+          dataType: "JSON"
+        }).done(function(json) 
+        {
+          var resultS = "[";
+          simpleA = [];
+
+          var data = new google.visualization.DataTable();
+          
+          data.addColumn('datetime', 'Day');
+          data.addColumn('number', 'Minimum');
+          data.addColumn('number', 'Maximum');
+          data.addColumn('number', 'Avangers');
+          
+
+          for (var key in json) {
+              if (json.hasOwnProperty(key)) {
+                  var item = json[key];
+                  betaA = [convertTimestamp(item.time),parseFloat(item.min), parseFloat(item.max), parseFloat(item.avg)];
+                  simpleA.push(betaA);
+              }
+          };
+
+          resultS = resultS.substring(0, resultS.length - 1);
+          resultS += ']';
+
+          data.addRows(simpleA);
+        
+          var options = {
+            chart: {
+              title: 'Box Office Earnings in First Two Weeks of Opening',
+              subtitle: 'in millions of dollars (USD)',
+              crosshair: { focused: { color: '#3bc', opacity: 0.8 } }
+            }            
+          };
+
+          var chart = new google.charts.Line(document.getElementById('chart_div'));
+
+          chart.draw(data, options);
+        });     
       }
 
+      google.load('visualization', '1', {packages: ['corechart', 'line'],'callback': drawBasic});
 
-    console.log(array.length);
-    console.log(array[0].time);
-
-    }); 
-
-  function timeConverter(UNIX_timestamp){
-    var a = new Date(UNIX_timestamp * 1000);
-    var year = a.getFullYear();
-    var month = a.getMonth()+1;
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var time = year + '-' + month + '-' + date + ' ' + hour + ':' + min ;
-    return time;
-  }
+      $(window).resize(function(){
+        drawBasic();
+      });
+  });
 
 
 
-  </script>
+</script>
+
 </body>
 </html>

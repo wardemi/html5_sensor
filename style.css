@@ -4,8 +4,11 @@ body{
 
 .wrapper-body .container{
 	padding-top: 75px;
-	min-height: 800px;
 	color: #333333;
+}
+
+.about{
+	position: relative;
 }
 
 .about h1{
@@ -36,4 +39,21 @@ nav a:hover{
 
 .nav>li>a:focus, .nav>li>a:hover{
 	background: none;
+}
+
+.chart-wrapper{
+	width: 100%;
+	height: 100%;
+}
+
+.chart img{
+	width: 100px;
+	height: 100px;
+	display:block;
+    margin:auto;
+}
+
+#chart_div{
+    width: 100%; 
+  	height: 600px;
 }
