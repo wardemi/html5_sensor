@@ -33,7 +33,7 @@ nav a{
 	color: #fff;
 }
 
-nav a:hover{
+nav a:hover,a:focus{
 	color: #F58400;
 }
 
@@ -56,4 +56,12 @@ nav a:hover{
 #chart_div{
     width: 100%; 
   	height: 600px;
+}
+
+.icon-bar{
+	background-color: #F58400;
+}
+
+#chartAll_div{
+	margin: 50px 0;
 }
